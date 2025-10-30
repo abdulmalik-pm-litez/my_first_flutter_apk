@@ -78,7 +78,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                     style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
                     ),
                     Text(
-                    'Please try again later',
+                    'Please try again',
                     style: theme.textTheme.labelSmall?.copyWith(fontSize: 16),
                     ),
                 ],
