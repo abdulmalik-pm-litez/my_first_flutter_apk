@@ -1,12 +1,11 @@
 import 'package:firstprojectflutter/repositories/crypto_coins/crypto_coins.dart';
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class CryptoCoinsRepository implements AbstractCoinsRepository {
+  CryptoCoinsRepository({required this.dio, required this.cryptoCoinsBox});
 
-  CryptoCoinsRepository({
-    required this.dio,
-    });
-    
   final Dio dio;
 
   @override
