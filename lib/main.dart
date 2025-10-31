@@ -32,9 +32,9 @@ void main() {
     ),
   );
 
-  GetIt.I.registerLazySingleton<AbstractCoinsRepository>(
-    () => CryptoCoinsRepository(dio: dio),
-  );
+  // GetIt.I.registerLazySingleton<AbstractCoinsRepository>(
+  //   () => CryptoCoinsRepository(dio: dio),
+  // );
   //.registerSingleton - паттерн который означает какая-то сущность была создана только один раз и больше быть не может
   //.registerLazySingleton - который создается при запросе необходимости
 
