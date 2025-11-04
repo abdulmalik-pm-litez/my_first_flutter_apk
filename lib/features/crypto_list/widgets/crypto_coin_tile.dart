@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firstprojectflutter/repositories/crypto_coins/models/crypto_coin.dart';
+import 'package:firstprojectflutter/router/router.dart';
 import 'package:flutter/material.dart';
 
 class CryptoCoinTile extends StatelessWidget {
@@ -30,7 +32,17 @@ class CryptoCoinTile extends StatelessWidget {
       trailing: const Icon(Icons.arrow_forward),
 
       onTap: () {
-        Navigator.of(context).pushNamed('/coin', arguments: coin);
+        AutoRouter.of(context).push(CryptoCoinRoute(coin: coin));
+      },
+    );
+  }
+}
+
+
+        // Navigator.of(context).pushNamed(
+        //   '/coin',
+        //   arguments: coin
+        //   );
         //.pushNamed() - это метод навигации которое открывает какую-то ссылку
 
         // Navigator.of(context).push(
@@ -42,9 +54,6 @@ class CryptoCoinTile extends StatelessWidget {
         // );
         //Navigator.of(context) - Дефолтный навигатор Flutter для навигации.
         //.push(route) - открывает определенный виджет или экран.
-      },
+
 
       //onTap - Callback метод который будет вызываться при нажатии
-    );
-  }
-}

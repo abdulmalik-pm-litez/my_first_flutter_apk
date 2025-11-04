@@ -1,13 +1,15 @@
 name: firstprojectflutter #Название пакета приложения 
 description: "My First Flutter application" #Описания приложения для Package
 publish_to: 'none' #Перечисления сайтов, куда будет опубликован данные приложения или сайта
-version: 1.0.0+1  #Версия приложения
+version: 1.0.0+1 #Версия приложения
 
 environment: #Устанавливает какую версию языка Dart использует Flutter проект
   sdk: ^3.11.0-17.0.dev
 
 dependencies: #Зависимость приложения
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.8 #Стандартные куплетеновские наборы иконок для IOS приложений (можно использовать также для Android)
   flutter_svg: ^2.2.1
@@ -22,19 +24,16 @@ dependencies: #Зависимость приложения
   json_annotation: ^4.9.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  auto_route: ^7.3.2
 
-
-  
-  
-    
 dev_dependencies: #Зависимость приложения Flutter в момент разработки
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0 #Не пойдет в итоговую сборку приложения (не будет занимать лишнее место у пользователей на их устройствах)
   json_serializable: ^6.8.0
   hive_generator: ^2.0.1
-  build_runner: ^2.4.6
-  
+  auto_route_generator: ^7.3.2
+  build_runner: ^2.4.13
 
 flutter: #Все дополнительные зависимости Flutter приложения и конфигурационные настройки
   uses-material-design: true
@@ -43,13 +42,10 @@ flutter: #Все дополнительные зависимости Flutter п�
   assets:
     - assets/svg/
   #   - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -69,3 +65,5 @@ flutter: #Все дополнительные зависимости Flutter п�
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_intl:
+  enabled: true

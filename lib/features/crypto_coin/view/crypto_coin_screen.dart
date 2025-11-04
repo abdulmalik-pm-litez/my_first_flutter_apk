@@ -1,4 +1,3 @@
-
 // import 'package:flutter/material.dart';
 
 // class CryptoCoinScreen extends StatefulWidget {
@@ -42,32 +41,40 @@
 //   }
 // }
 
-
+import 'package:auto_route/auto_route.dart';
 import 'package:firstprojectflutter/features/crypto_coin/bloc/crypto_coin_details/crypto_coin_details_bloc.dart';
-import 'package:firstprojectflutter/repositories/crypto_coins/abstract_coins_repository.dart';
+import 'package:firstprojectflutter/features/crypto_coin/widgets/widgets.dart';
+import 'package:firstprojectflutter/repositories/crypto_coins/crypto_coins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+
+@RoutePage()
+
 class CryptoCoinScreen extends StatefulWidget {
   const CryptoCoinScreen({
-    super.key,
-  });
+    super.key, 
+    required this.coin
+    });
+
+  final CryptoCoin coin;
 
   @override
   State<CryptoCoinScreen> createState() => _CryptoCoinScreenState();
 }
 
 class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
-  String? coinName;
 
   final _coinDetailsBloc = CryptoCoinDetailsBloc(
     GetIt.I<AbstractCoinsRepository>(),
   );
 
-@override
+
+
+  @override
   void initState() {
-    //1 _coinDetailsBloc.add(LoadCryptoCoinDetails(currencyCode: widget.coin.name));
+    _coinDetailsBloc.add(LoadCryptoCoinDetails(currencyCode: widget.coin.name));
     super.initState();
   }
 
@@ -94,7 +101,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   //   super.didChangeDependencies();
   // }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -137,7 +144,7 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                     child: Column(
                       children: [
                         _DataRow(
-                          title: 'Hight 24 Hour',
+                          title: 'High 24 Hour',
                           value: '${coinDetails.high24Hour} \$',
                         ),
                         const SizedBox(height: 6),
@@ -159,35 +166,32 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   }
 }
 
-class BaseCard extends StatelessWidget {
-  const BaseCard({super.key, required this.child});
+// class BaseCard extends StatelessWidget {
+//   const BaseCard({super.key, required this.child});
 
-  final Widget child;
+//   final Widget child;
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
 
-    return Card(
-      color: theme.cardColor.withOpacity(0.1), // тёмный прозрачный фон
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      elevation: 0, // убираем тень для flat-стиля
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: child,
-      ),
-    );
-  }
-}
+//     return Card(
+//       color: theme.cardColor.withOpacity(0.1), // тёмный прозрачный фон
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(16),
+//       ),
+//       margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+//       elevation: 0, // убираем тень для flat-стиля
+//       child: Padding(
+//         padding: const EdgeInsets.all(16),
+//         child: child,
+//       ),
+//     );
+//   }
+// }
 
 class _DataRow extends StatelessWidget {
-  const _DataRow({
-    required this.title,
-    required this.value,
-  });
+  const _DataRow({required this.title, required this.value});
 
   final String title;
   final String value;
@@ -200,9 +204,7 @@ class _DataRow extends StatelessWidget {
       children: [
         SizedBox(width: 140, child: Text(title)),
         const SizedBox(width: 32),
-        Flexible(
-          child: Text(value),
-        ),
+        Flexible(child: Text(value)),
       ],
     );
   }
