@@ -7,9 +7,13 @@ import 'package:firstprojectflutter/repositories/crypto_coins/crypto_coins.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
+
 
 class CryptoListScreen extends StatefulWidget {
-  const CryptoListScreen({super.key});
+  const CryptoListScreen({
+    super.key
+    });
 
   @override
   State<CryptoListScreen> createState() => _CryptoListScreenState();
@@ -25,7 +29,9 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
   //   });
   // }
 
-  final _cryptoListBloc = CryptoListBloc(GetIt.I<AbstractCoinsRepository>());
+  final _cryptoListBloc = CryptoListBloc(
+    GetIt.I<AbstractCoinsRepository>()
+    );
 
   @override
   void initState() {
@@ -43,8 +49,22 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
       //Фон для Body, отдельно можно использовать для каждого Scaffold(), когда использован внутри Theme
       appBar: AppBar(
         centerTitle: true, //Текст по центру
-        title: Text('CryptoCurrenciesList'),
-
+        title: const Text('CryptoCurrenciesList'),
+        actions: [
+          IconButton(
+            onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TalkerScreen(
+                    talker: GetIt.I<Talker>(),
+                  ),
+                ),
+              );
+            }, 
+            icon: Icon(Icons.document_scanner_outlined,
+          ),
+        )
+      ],
         //leading: Icon(Icons.arrow_back), //#Иконка
       ),
 
@@ -80,6 +100,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  
                   children: [
                     Text(
                       'Something went wrong',
@@ -90,10 +111,12 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                       //  color: Colors.white,
                      // ),
                     ),
+                    
                     Text(
                       'Please try again later',
                       style: theme.textTheme.labelSmall?.copyWith(fontSize: 16),
                     ),
+                    
                     const SizedBox(height: 30),
                     TextButton(
                       onPressed: () {

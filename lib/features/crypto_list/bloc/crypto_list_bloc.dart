@@ -16,25 +16,25 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> {
     on<LoadCryptoList>(_load);
   }
 
-final AbstractCoinsRepository coinsRepository;
+  final AbstractCoinsRepository coinsRepository;
 
-Future<void> _load(
-  LoadCryptoList event,
-  Emitter<CryptoListState> emit,
-) async {
-      try {
-        if (state is! CryptoListLoaded) {
-          emit(CryptoListLoading());
-
-        final coinsList = await coinsRepository.getCoinsList();
-        emit(CryptoListLoaded(coinsList: coinsList));
-      } catch (e, st) {
-        emit(CryptoListLoadingFailure(exception: e));
-        GetIt.I<Talker>().handle(e, st);
-      } finally {
-        event.completer?.complete();
+  Future<void> _load(
+    LoadCryptoList event,
+    Emitter<CryptoListState> emit,
+  ) async {
+    try {
+      if (state is! CryptoListLoaded) {
+        emit(CryptoListLoading());
       }
+      final coinsList = await coinsRepository.getCoinsList();
+      emit(CryptoListLoaded(coinsList: coinsList));
+    } catch (e, st) {
+      emit(CryptoListLoadingFailure(exception: e));
+      GetIt.I<Talker>().handle(e, st);
+    } finally {
+      event.completer?.complete();
     }
+  }
 
   @override
   void onError(Object error, StackTrace stackTrace) {

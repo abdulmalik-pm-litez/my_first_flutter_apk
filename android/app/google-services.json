@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "328666907245",
+    "project_id": "crypto-list-app-flutter",
+    "storage_bucket": "crypto-list-app-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328666907245:android:216615a297d31cfb65b564",
+        "android_client_info": {
+          "package_name": "com.hello_world.firstprojectflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmK_cmpeR0O7XonutAaiRaxDWVBYEyIzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

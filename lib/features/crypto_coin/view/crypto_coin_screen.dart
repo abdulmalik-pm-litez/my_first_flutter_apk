@@ -1,8 +1,58 @@
 
+// import 'package:flutter/material.dart';
+
+// class CryptoCoinScreen extends StatefulWidget {
+//   const CryptoCoinScreen({super.key});
+
+//   @override
+//   State<CryptoCoinScreen> createState() => _CryptoCoinScreenState();
+// }
+
+// class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
+//   String? coinName;
+
+//   @override
+//   void didChangeDependencies() {
+//     final args = ModalRoute.of(context)?.settings.arguments;
+//     assert(args != null && args is String, 'You must provide String args');
+//     //проверка во время разработки (debug mode)
+//     //assert если используется не используем условие 'if' и будем использовать coinName = args as String;
+
+//     // if (args == null) {
+//     //   log('You must provide args');
+//     //   //Лог о том что не были переданы аргументы
+//     //   return;
+//     // }
+
+//     // if (args is! String) {
+//     //   log('You must provide String args');
+//     //   return;
+//     // }
+
+//     coinName = args as String;
+//     setState(() {});
+//     super.didChangeDependencies();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text(coinName ?? '...'), centerTitle: true),
+//     );
+//   }
+// }
+
+
+import 'package:firstprojectflutter/features/crypto_coin/bloc/crypto_coin_details/crypto_coin_details_bloc.dart';
+import 'package:firstprojectflutter/repositories/crypto_coins/abstract_coins_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class CryptoCoinScreen extends StatefulWidget {
-  const CryptoCoinScreen({super.key});
+  const CryptoCoinScreen({
+    super.key,
+  });
 
   @override
   State<CryptoCoinScreen> createState() => _CryptoCoinScreenState();
@@ -11,33 +61,149 @@ class CryptoCoinScreen extends StatefulWidget {
 class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
   String? coinName;
 
-  @override
-  void didChangeDependencies() {
-    final args = ModalRoute.of(context)?.settings.arguments;
-    assert(args != null && args is String, 'You must provide String args');
-    //проверка во время разработки (debug mode)
-    //assert если используется не используем условие 'if' и будем использовать coinName = args as String;
+  final _coinDetailsBloc = CryptoCoinDetailsBloc(
+    GetIt.I<AbstractCoinsRepository>(),
+  );
 
-    // if (args == null) {
-    //   log('You must provide args');
-    //   //Лог о том что не были переданы аргументы
-    //   return;
-    // }
-
-    // if (args is! String) {
-    //   log('You must provide String args');
-    //   return;
-    // }
-
-    coinName = args as String;
-    setState(() {});
-    super.didChangeDependencies();
+@override
+  void initState() {
+    //1 _coinDetailsBloc.add(LoadCryptoCoinDetails(currencyCode: widget.coin.name));
+    super.initState();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   final args = ModalRoute.of(context)?.settings.arguments;
+  //   assert(args != null && args is String, 'You must provide String args');
+  //   //проверка во время разработки (debug mode)
+  //   //assert если используется не используем условие 'if' и будем использовать coinName = args as String;
+
+  //   // if (args == null) {
+  //   //   log('You must provide args');
+  //   //   //Лог о том что не были переданы аргументы
+  //   //   return;
+  //   // }
+
+  //   // if (args is! String) {
+  //   //   log('You must provide String args');
+  //   //   return;
+  //   // }
+
+  //   coinName = args as String;
+  //   setState(() {});
+  //   super.didChangeDependencies();
+  // }
+
+    @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: BlocBuilder<CryptoCoinDetailsBloc, CryptoCoinDetailsState>(
+        bloc: _coinDetailsBloc,
+        builder: (context, state) {
+          if (state is CryptoCoinDetailsLoaded) {
+            final coin = state.coin;
+            final coinDetails = coin.details;
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 160,
+                    width: 160,
+                    child: Image.network(coinDetails.fullImageUrl),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    coin.name,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  BaseCard(
+                    child: Center(
+                      child: Text(
+                        '${coinDetails.priceInUSD} \$',
+                        style: const TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  BaseCard(
+                    child: Column(
+                      children: [
+                        _DataRow(
+                          title: 'Hight 24 Hour',
+                          value: '${coinDetails.high24Hour} \$',
+                        ),
+                        const SizedBox(height: 6),
+                        _DataRow(
+                          title: 'Low 24 Hour',
+                          value: '${coinDetails.low24Hours} \$',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
+  }
+}
+
+class BaseCard extends StatelessWidget {
+  const BaseCard({super.key, required this.child});
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(coinName ?? '...'), centerTitle: true),
+    final theme = Theme.of(context);
+
+    return Card(
+      color: theme.cardColor.withOpacity(0.1), // тёмный прозрачный фон
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      elevation: 0, // убираем тень для flat-стиля
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: child,
+      ),
+    );
+  }
+}
+
+class _DataRow extends StatelessWidget {
+  const _DataRow({
+    required this.title,
+    required this.value,
+  });
+
+  final String title;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(width: 140, child: Text(title)),
+        const SizedBox(width: 32),
+        Flexible(
+          child: Text(value),
+        ),
+      ],
     );
   }
 }

@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:firstprojectflutter/router/router.dart';
 import 'package:firstprojectflutter/theme/theme.dart';
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 

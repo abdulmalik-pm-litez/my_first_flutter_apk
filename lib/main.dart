@@ -1,7 +1,14 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firstprojectflutter/crypto_coins_list_app.dart';
+import 'package:firstprojectflutter/firebase_options.dart';
+import 'package:firstprojectflutter/repositories/crypto_coins/models/crypto_coin_details.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:talker_bloc_logger/talker_bloc_logger.dart';
+import 'package:talker_bloc_logger/talker_bloc_logger_observer.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'repositories/crypto_coins/crypto_coins.dart';
@@ -9,8 +16,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-void main() {
+void main() async {
   //Метод запуска приложения
+  WidgetsFlutterBinding.ensureInitialized();
 
   final talker = TalkerFlutter.init();
   //Расширенный обработчик ошибок и регистратор для приложений Dart и Flutter
@@ -21,22 +29,39 @@ void main() {
   // GetIt.I<Talker>().error('Talker started...');
   // GetIt.I<Talker>().info('Talker started...');
 
+  final app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  talker.info(app.options.projectId);
+
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(CryptoCoinAdapter());
+  Hive.registerAdapter(CryptoCoinDetailAdapter());
+
+  final cryptoCoinsBox = await Hive.openBox<CryptoCoin>('crypto_coins_box');
+
   final dio = Dio();
   dio.interceptors.add(
     TalkerDioLogger(
-        settings: const TalkerDioLoggerSettings(
-          printRequestHeaders: true,
-          printResponseHeaders: true,
-          printResponseMessage: true,
-        ),
+      talker: talker,
+      settings: const TalkerDioLoggerSettings(printResponseData: false),
     ),
   );
 
-  // GetIt.I.registerLazySingleton<AbstractCoinsRepository>(
-  //   () => CryptoCoinsRepository(dio: dio),
-  // );
+  Bloc.observer = TalkerBlocObserver(
+    talker: talker,
+    settings: const TalkerBlocLoggerSettings(
+      printStateFullData: false,
+      printEventFullData: false,
+    ),
+  );
+
+  GetIt.I.registerLazySingleton<AbstractCoinsRepository>(
+    () => CryptoCoinsRepository(dio: dio, cryptoCoinsBox: cryptoCoinsBox, ),
+  );
   //.registerSingleton - паттерн который означает какая-то сущность была создана только один раз и больше быть не может
-  //.registerLazySingleton - который создается при запросе необходимости
+  //.registerLazySingleton - который создается при необходимости запроса
 
   FlutterError.onError = (details) =>
       GetIt.I<Talker>().handle(details.exception, details.stack);

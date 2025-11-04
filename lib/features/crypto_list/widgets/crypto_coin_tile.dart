@@ -9,8 +9,9 @@ class CryptoCoinTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final coinDetails = coin.details;
     return ListTile(
-      leading: Image.network(coin.imageUrl),
+      leading: Image.network(coinDetails.fullImageUrl),
       //leading - начальный,
       //trailing - конечный,
       //В LTR (слева направо) макете: leading = слева, trailing = справа.
@@ -22,8 +23,9 @@ class CryptoCoinTile extends StatelessWidget {
       ),
 
       subtitle: Text(
-        '${coin.priceInUSD} \$', 
-        style: theme.textTheme.labelSmall),
+        '${coinDetails.priceInUSD} \$',
+        style: theme.textTheme.labelSmall,
+      ),
 
       trailing: const Icon(Icons.arrow_forward),
 
