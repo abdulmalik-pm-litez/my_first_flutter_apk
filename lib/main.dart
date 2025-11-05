@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firstprojectflutter/firebase_options.dart';
 import 'package:firstprojectflutter/crypto_coins_list_app.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'repositories/crypto_coins/crypto_coins.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +15,12 @@ import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:firstprojectflutter/repositories/crypto_coins/models/crypto_coin_details.dart';
 
-
 void main() async {
   //Метод запуска приложения
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
+
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();   
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);  
 
   final talker = TalkerFlutter.init();
   //Расширенный обработчик ошибок и регистратор для приложений Dart и Flutter
@@ -36,10 +39,9 @@ void main() async {
   talker.info(app.options.projectId);
 
   await Hive.initFlutter();
-
+  
   Hive.registerAdapter(CryptoCoinAdapter());
   Hive.registerAdapter(CryptoCoinDetailAdapter());
-
   final cryptoCoinsBox = await Hive.openBox<CryptoCoin>(cryptoCoinBoxName);
 
   final dio = Dio();
@@ -67,6 +69,8 @@ void main() async {
   FlutterError.onError = (details) =>
       GetIt.I<Talker>().handle(details.exception, details.stack);
 
+  FlutterNativeSplash.remove();
+  
   runZonedGuarded(() => runApp(const CryptoCurrenciesListApp()), (e, st) {
     GetIt.I<Talker>().handle(e, st);
   });

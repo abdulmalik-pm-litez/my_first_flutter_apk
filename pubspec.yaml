@@ -4,7 +4,7 @@ publish_to: 'none' #Перечисления сайтов, куда будет �
 version: 1.0.0+1 #Версия приложения
 
 environment: #Устанавливает какую версию языка Dart использует Flutter проект
-  sdk: ^3.11.0-17.0.dev
+  sdk: ^3.0.0-17.0.dev
 
 dependencies: #Зависимость приложения
   flutter:
@@ -25,6 +25,9 @@ dependencies: #Зависимость приложения
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   auto_route: ^7.3.2
+  change_app_package_name: ^1.5.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies: #Зависимость приложения Flutter в момент разработки
   flutter_test:
@@ -67,3 +70,36 @@ flutter: #Все дополнительные зависимости Flutter п�
   # see https://flutter.dev/to/font-from-package
 flutter_intl:
   enabled: true
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  min_sdk_android: 21
+  # adaptive_icon_background: "transperent"
+  # adaptive_icon_foreground: assets/icon/app_icon.png
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  
+  # БАЗОВЫЙ сплэш (Android 10–11 и ниже + iOS)
+  color: "#0B1220"              # тёмно-синий фон (под крипто-стиль)
+  image: assets/icon/fg_splash.png
+  # (опционально)
+  # branding: assets/icon/brand.png
+
+  # ТЁМНАЯ ТЕМА (если устройство в dark mode)
+  color_dark: "#0B1220"
+  image_dark: assets/icon/fg_splash.png
+
+  # ANDROID 12+ (обязательно указать)
+  android_12:
+    color: "#0B1220"
+    image: assets/icon/fg_splash.png   # или тот же app_icon.png
+    # (опционально) фон под иконкой-«пузырём»
+    # icon_background_color: "#0B1220"
+
+    
+    

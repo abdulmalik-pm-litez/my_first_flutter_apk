@@ -1,10 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="firstprojectflutter"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Crypto Coins Tracker"
+        android:icon="@mipmap/launcher_icon"
+        android:usesCleartextTraffic="true">
+        
         <activity
-            android:name=".MainActivity"
+            android:name="com.flutter.cryptocoinstracker.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:taskAffinity=""

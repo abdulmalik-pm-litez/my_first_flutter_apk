@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:328666907245:android:b2f80177a14d745d65b564",
+        "android_client_info": {
+          "package_name": "com.flutter.cryptocoinstracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmK_cmpeR0O7XonutAaiRaxDWVBYEyIzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:328666907245:android:216615a297d31cfb65b564",
         "android_client_info": {
           "package_name": "com.hello_world.firstprojectflutter"
